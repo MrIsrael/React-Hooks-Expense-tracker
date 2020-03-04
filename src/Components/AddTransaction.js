@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { Fragment, useState, useContext } from "react";
+import { GlobalContext } from '../Context/GlobalState';
 
 const AddTransaction = () => {
   const [text, setText] = useState('');
   const [amount, setAmount] = useState(0);
 
+  const { addTransaction } = useContext(GlobalContext);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    const newTransaction = {
+      id: Math.floor(Math.random() * 100000000 ),
+      text,                                               // text: text
+      amount: parseInt(amount)                            // amount: +amount
+    };
+
+    addTransaction(newTransaction);
+  };
+
   return(
-    <>
+    <Fragment>
       <h3>Add new transaction</h3>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="form-control">
           <label htmlFor="text">Text</label>
           <input type="text" value={text} onChange={(event) => setText(event.target.value)}
@@ -20,7 +35,7 @@ const AddTransaction = () => {
         </div>
         <button className="btn">Add transaction</button>
       </form>
-    </>
+    </Fragment>
   );
 };
 
